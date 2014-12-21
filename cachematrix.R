@@ -1,8 +1,14 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
+## Data structure to store and manipulate a given matrix as well as its inverse
+##
+##
+## Creates the data structure and manipulates and/or returns its contents
+## x                    stores the matrix
+## inv                  stores the inverse of the matrix, initialized to NULL
+## set(y)               replaces the previously stored matrix with the matrix y
+##                      and sets the inverse to NULL
+## get                  returns the matrix stored in local variable x
+## setinverse(newInv)   sets the stored inverse to the value given by newInv
+## getinverse()         returns the inverse stored in local variable inv
 makeCacheMatrix <- function(x = matrix()) {
     inv <- NULL
     set <- function(y) {
@@ -10,27 +16,28 @@ makeCacheMatrix <- function(x = matrix()) {
         inv <<- NULL
     }
     get <- function() x
-    setInv <- function(inverse) inv <- inverse
-    getInv <- function() inv
+    setinverse <- function(newInv) inv <<- newInv
+    getinverse <- function() inv
     list( set = set,
           get = get,
-          setInv = setInv
-          getInv = getInv
+          setinverse = setinverse,
+          getinverse = getinverse
     )
 }
 
-
-## Write a short comment describing this function
-
+## Checks whether the inverse of a matrix, stored in a makeCacheMatrix 
+## data structure, is cached. 
+## If not, it computes the inverse using the solve() function and stores it in
+## the data structure using the setinverse() function.
+## Returns the inverse matrix
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-    inv <- x$getInv()
+    inv <- x$getinverse()
     if(!is.null(inv)) {
-        message("retrieving inverse from cache")
+        message("retrieving inverted matrix from cache")
         return(inv)
     }
     mat <- x$get()
     inv <- solve(mat, ...)
-    x$setmean(inv)
+    x$setinverse(inv)
     inv
 }
